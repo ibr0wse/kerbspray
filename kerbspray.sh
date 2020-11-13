@@ -29,7 +29,7 @@ else
         index=$(($index + 1))
         counter=$(($counter + 1))
         if [ $counter -eq $lockout ] ; then
-            templockout = $lockoutduration
+            templockout=$lockoutduration
             echo "Reached lockout: $lockout, sleeping for $templockout"
             counter=0
             while [ $templockout -gt 0 ]; do
