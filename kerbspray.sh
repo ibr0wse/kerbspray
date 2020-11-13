@@ -1,11 +1,13 @@
+
 #!/bin/bash
 if [ $# -lt 5 ] ; then
     echo "Not Enough Arguments"
-    echo "Usage: kerbspray.sh <domain> <usernameList> <passwordList> <LockoutThreshold> <LockoutResetTimerInMinutes>"
+    echo "Useage: kerbspray.sh <domain> <usernameList> <passwordList> <LockoutThreshold> <LockoutResetTimerInMinutes>"
     echo -e "Example: kerbspray.sh domain.ca users.txt passwords.txt 2 60\n"
     exit 0
 else
     mkdir -p logs
+    userslist="logs/username-removed-successes.txt"
     domain=$1
     users=$2
     passwordlist=$3
@@ -27,13 +29,15 @@ else
         index=$(($index + 1))
         counter=$(($counter + 1))
         if [ $counter -eq $lockout ] ; then
-            echo "Reached lockout: $lockout, sleeping for $lockoutduration"
+            templockout = $lockoutduration
+            echo "Reached lockout: $lockout, sleeping for $templockout"
             counter=0
-            while [ $lockoutduration -gt 0 ]; do
-                echo -ne "  $lockoutduration\033[0K\r"
+            while [ $templockout -gt 0 ]; do
+                echo -ne "  $templockout\033[0K\r"
                 sleep 1
-                : $((lockoutduration--))
+                : $((templockout--))
             done
         fi
     done
 fi
+
